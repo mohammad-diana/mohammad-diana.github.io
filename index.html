@@ -4,13 +4,22 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>دعوة خطوبة ملكية | ديانا ومحمد</title>
-  <meta name="description" content="دعوة خطوبة ملكية لديانا ومحمد يوم 27 يوليو 2026 في قاعة فندق القيصر، دمشق." />
+  <meta name="description" content="دعوة خطوبة ملكية لديانا ومحمد يوم 26 يوليو 2026 في قاعة فندق القيصر، دمشق." />
   <meta property="og:title" content="Diana & Mohammed | Royal Engagement Invitation" />
   <meta property="og:description" content="You are invited to celebrate the engagement of Diana and Mohammed." />
   <meta property="og:type" content="website" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="assets/castle.webp" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/ballroom.webp">
+  <link rel="preload" as="image" href="assets/carriage.webp">
+  <link rel="preload" as="image" href="assets/glass_shoe_stairs.webp">
+  <link rel="preload" as="image" href="assets/cinderella_stairs.webp">
+  <link rel="preload" as="image" href="assets/shoe_closeup.webp">
+  <link rel="preload" as="image" href="assets/bird_royal_single.webp">
+  <link rel="preload" as="image" href="assets/bird_royal_single_mirror.webp">
+  <link rel="preload" as="audio" href="assets/royal_music.mp3" type="audio/mpeg">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="locked">
@@ -18,10 +27,10 @@
   <div class="fairytale-effects" aria-hidden="true">
     <div class="snow-layer" id="snowLayer"></div>
     <div class="magic-star-layer" id="magicStarLayer"></div>
-    <img class="flying-shoe shoe-one" src="assets/glass-slipper.svg" alt="" />
-    <img class="flying-shoe shoe-two" src="assets/glass-slipper.svg" alt="" />
-    <img class="flying-bird bird-dream-one" src="assets/bird_royal_single.png" alt="" />
-    <img class="flying-bird bird-dream-two" src="assets/bird_royal_single_mirror.png" alt="" />
+    <img class="flying-shoe shoe-one" src="assets/glass-slipper.svg" alt="" loading="eager" decoding="async" />
+    <img class="flying-shoe shoe-two" src="assets/glass-slipper.svg" alt="" loading="eager" decoding="async" />
+    <img class="flying-bird bird-dream-one" src="assets/bird_royal_single.webp" alt="" loading="eager" decoding="async" fetchpriority="high" />
+    <img class="flying-bird bird-dream-two" src="assets/bird_royal_single_mirror.webp" alt="" loading="eager" decoding="async" />
   </div>
 
   <audio id="bgMusic" src="assets/royal_music.mp3" preload="auto" autoplay loop playsinline></audio>
@@ -45,10 +54,10 @@
       </span>
 
       <span class="carrier-birds" aria-hidden="true">
-        <img class="carrier-bird carrier-left" src="assets/bird_royal_single_mirror.png" alt="" />
+        <img class="carrier-bird carrier-left" src="assets/bird_royal_single_mirror.webp" alt="" loading="eager" decoding="async" fetchpriority="high" />
         <span class="carrier-thread thread-left"></span>
         <span class="carrier-thread thread-right"></span>
-        <img class="carrier-bird carrier-right" src="assets/bird_royal_single.png" alt="" />
+        <img class="carrier-bird carrier-right" src="assets/bird_royal_single.webp" alt="" loading="eager" decoding="async" fetchpriority="high" />
       </span>
 
       <span class="door door-left">

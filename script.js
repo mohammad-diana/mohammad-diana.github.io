@@ -7,6 +7,57 @@ const langToggle = document.getElementById("langToggle");
 const musicBtn = document.getElementById("musicBtn");
 const bgMusic = document.getElementById("bgMusic");
 
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+const isSmallScreen = window.matchMedia("(max-width: 760px)").matches;
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const liteMode = isIOS || isSmallScreen || prefersReducedMotion;
+
+if (liteMode) document.body.classList.add("lite-mode");
+if (isIOS) document.body.classList.add("ios-lite");
+
+// Preload and keep assets in memory so opening the card feels instant.
+const ASSETS_TO_PRELOAD = [
+  "assets/castle.webp",
+  "assets/ballroom.webp",
+  "assets/carriage.webp",
+  "assets/glass_shoe_stairs.webp",
+  "assets/cinderella_stairs.webp",
+  "assets/shoe_closeup.webp",
+  "assets/bird_royal_single.webp",
+  "assets/bird_royal_single_mirror.webp",
+  "assets/glass-slipper.svg"
+];
+
+const preloadedAssets = [];
+let assetsPreloaded = false;
+
+function preloadSiteAssets() {
+  if (assetsPreloaded) return;
+  assetsPreloaded = true;
+  ASSETS_TO_PRELOAD.forEach((src) => {
+    const img = new Image();
+    img.decoding = "async";
+    img.loading = "eager";
+    img.src = src;
+    preloadedAssets.push(img);
+    if (img.decode) img.decode().catch(() => {});
+  });
+
+  if (bgMusic) {
+    bgMusic.preload = "auto";
+    bgMusic.load();
+    // Same-origin fetch helps GitHub Pages cache the mp3 before the first click.
+    fetch("assets/royal_music.mp3", { cache: "force-cache" }).catch(() => {});
+  }
+}
+
+preloadSiteAssets();
+
+["pointerdown", "touchstart", "click"].forEach((eventName) => {
+  window.addEventListener(eventName, preloadSiteAssets, { once: true, passive: true });
+});
+
+
 const targetDate = new Date("2026-07-26T19:00:00+03:00").getTime();
 
 let tourFrame = null;
@@ -14,7 +65,7 @@ let tourStarted = false;
 let lastFrameTime = null;
 let currentLang = "ar";
 
-const SCROLL_SPEED = 104; 
+const SCROLL_SPEED = liteMode ? 96 : 104; 
 
 function applyLanguage(lang) {
   currentLang = lang;
@@ -52,6 +103,7 @@ async function playMusic() {
   try {
     bgMusic.volume = 0.82;
     bgMusic.loop = true;
+    bgMusic.load();
     await bgMusic.play();
     updateMusicButton(true);
   } catch (error) {
@@ -167,7 +219,7 @@ function keepAutoTourNatural() {
   }
 }
 
-["wheel", "touchmove", "pointermove", "keydown"].forEach((eventName) => {
+["wheel", "touchend", "scroll", "keydown"].forEach((eventName) => {
   window.addEventListener(eventName, keepAutoTourNatural, { passive: true });
 });
 
@@ -178,10 +230,10 @@ if (tourBtn) {
 }
 
 function createSectionSparkles(target) {
-  if (target.dataset.sparkled === "true") return;
+  if (liteMode || target.dataset.sparkled === "true") return;
   target.dataset.sparkled = "true";
 
-  for (let i = 0; i < 5; i += 1) {
+  for (let i = 0; i < (liteMode ? 1 : 4); i += 1) {
     const sparkle = document.createElement("span");
     sparkle.className = "section-sparkle";
     sparkle.style.setProperty("--x", `${18 + Math.random() * 64}%`);
@@ -250,7 +302,7 @@ if (form && formMessage) {
   });
 }
 
-const sparkleCount = 18;
+const sparkleCount = liteMode ? 5 : 14;
 const stars = document.querySelector(".stars");
 
 for (let i = 0; i < sparkleCount; i += 1) {
@@ -264,12 +316,13 @@ for (let i = 0; i < sparkleCount; i += 1) {
 
 
 function createFairytaleEffects() {
+  if (prefersReducedMotion) return;
   const snowLayer = document.getElementById("snowLayer");
   const magicStarLayer = document.getElementById("magicStarLayer");
 
   if (snowLayer && !snowLayer.dataset.ready) {
     snowLayer.dataset.ready = "true";
-    const count = window.innerWidth < 700 ? 14 : 24;
+    const count = liteMode ? 6 : 18;
 
     for (let i = 0; i < count; i += 1) {
       const flake = document.createElement("span");
@@ -287,7 +340,7 @@ function createFairytaleEffects() {
 
   if (magicStarLayer && !magicStarLayer.dataset.ready) {
     magicStarLayer.dataset.ready = "true";
-    const count = window.innerWidth < 700 ? 8 : 14;
+    const count = liteMode ? 3 : 10;
 
     for (let i = 0; i < count; i += 1) {
       const star = document.createElement("span");
